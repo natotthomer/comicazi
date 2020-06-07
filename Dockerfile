@@ -1,20 +1,36 @@
+# ./Dockerfile
 FROM ruby:2.5
-RUN apt-get update -qq && apt-get install -y nodejs mariadb-client nano
-CMD ["/bin/bash","echo","/etc/apt/sources.list"]
-
-RUN mkdir /myapp
-WORKDIR /myapp
-COPY Gemfile /myapp/Gemfile
-COPY Gemfile.lock /myapp/Gemfile.lock
-
+# set the app directory var
+ENV RAILS_ENV development
+ENV BUNDLE_PATH /bundle
+# set the app directory var
+ENV APP_HOME /home/app
+WORKDIR $APP_HOME
+RUN apt-get update -qq
+# Install apt dependencies
+RUN apt-get install -y --no-install-recommends \
+  rails
+  nodejs \  
+  build-essential \
+  curl libssl-dev \
+  git \
+  unzip \
+  zlib1g-dev \
+  libxslt-dev \
+  default-mysql-client \
+  sqlite3 \
+  yarn
+# install bundler
+RUN gem install bundler
+# Separate task from `add . .` as it will be
+# Skipped if gemfile.lock hasn't changed *
+COPY Gemfile ./Gemfile
+# Install gems to /bundle
 RUN bundle install
-COPY . /myapp
-
-# Add a script to be executed every time the container starts.
-COPY entrypoint.sh /usr/bin/
-RUN chmod +x /usr/bin/entrypoint.sh
-ENTRYPOINT ["entrypoint.sh"]
+RUN rails webpacker:install
+RUN yarn install --check-files
+ADD . .
+# compile assets!
+# RUN bundle exec rake assets:precompile
 EXPOSE 3000
-
-# Start the main process.
-CMD ["rails", "server", "-b", "0.0.0.0"]
+CMD ["/sbin/my_init"]
