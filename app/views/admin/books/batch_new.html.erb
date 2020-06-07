@@ -1,0 +1,5 @@
+<%= form_with url: '/admin/books/batch_create' do |form| %>
+  <%= form.file_field :files %>
+  <%= form.file_field :metadata %>
+  <%= form.submit %>
+<% end %>

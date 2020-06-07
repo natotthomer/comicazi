@@ -3,6 +3,12 @@ Rails.application.routes.draw do
 
   resources :books
   namespace :admin do
-    resources :books
+    resources :books do
+      collection do
+        get :batch_new
+        post :batch_create
+        get :batch_show
+      end
+    end
   end
 end

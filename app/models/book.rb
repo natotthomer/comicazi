@@ -13,4 +13,10 @@ class Book < ApplicationRecord
   def cover_image 
     rails_blob_path(self.book_file.cover_image, disposition: "attachment", only_path: true)
   end
+
+  # Class methods
+
+  def self.batch_create
+    
+  end
 end
