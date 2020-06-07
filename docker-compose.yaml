@@ -18,6 +18,8 @@ services:
       - "3000:3000"
     depends_on:
       - mariadb
+    tty: true
+    stdin_open: true
 volumes:
   data-mysql:
     driver: local

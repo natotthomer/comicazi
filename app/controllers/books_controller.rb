@@ -8,8 +8,7 @@ class BooksController < ApplicationController
   def create
     @book = Book.create(book_params)
     if @book
-      puts 'HELLO'
-      @file = BookFile.create(book_file_params)
+      @file = BookFile.build_with_cover_image(book_file_params)
       redirect_to(@book)
     else
       render "new"
@@ -35,6 +34,10 @@ class BooksController < ApplicationController
 
   def show
     @book = Book.find(params[:id])
+  end
+
+  def batch_create
+    "hello gorgeous"
   end
   
   private
