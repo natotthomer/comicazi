@@ -6,14 +6,21 @@ class Admin::BooksController < ApplicationController
   def batch_new
     puts "YO WASSUP"
   end
-
-  # def batch_show
-  #   puts "AND WE'RE HERE"
-  # end
-
+  
   def batch_create
-    puts "PARAMS:"
-    puts params
-    redirect_to "/admin/books/batch_show"
+    @books = Book.batch_create(batch_book_params)
+
+    render template: "admin/books/batch_show", locals: { books: @books }
+  end
+
+  def batch_show
+    @books = params[:books]
+    render_template "batch_show"
+  end
+  
+  private
+  
+  def batch_book_params
+    params.permit(:zip, :metadata)
   end
 end

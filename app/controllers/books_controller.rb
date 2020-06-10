@@ -6,9 +6,9 @@ class BooksController < ApplicationController
   end
   
   def create
-    @book = Book.create(book_params)
+    @book = Book.make(book_params)
     if @book
-      @file = BookFile.build_with_cover_image(book_file_params)
+      @file = BookFile.build_with_attachments(book_file_params)
       redirect_to(@book)
     else
       render "new"

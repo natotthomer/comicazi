@@ -1,5 +1,5 @@
-<%= form_with url: '/admin/books/batch_create' do |form| %>
-  <%= form.file_field :files %>
+<%= form_with url: '/admin/books/batch_create', local: true do |form| %>
+  <%= form.file_field :zip %>
   <%= form.file_field :metadata %>
   <%= form.submit %>
 <% end %>

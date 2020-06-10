@@ -5,7 +5,7 @@ class BookFile < ApplicationRecord
 
   after_create
 
-  def self.build_with_cover_image(params)
+  def self.build_with_attachments(params)
     BookFileBuilder.new(params).create
   end
 
