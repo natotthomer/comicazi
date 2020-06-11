@@ -26,24 +26,24 @@ class Book < ApplicationRecord
     end
   end
 
-  def self.unzip_file (file, destination)
+  def self.unarchive(filepath, destination)
     extracted = false
     
-    unzipped_path = ''
-    Zip::File.open(file) { |zip_file|
-      zip_file.each { |f|
-        puts f.name
-        unzipped_path = File.join(destination, f.name) unless unzipped_path.present?
-        puts File.join(destination, f.name)
-        f_path = File.join(destination, f.name)
+    unarchived_path = ''
+    Zip::File.open(filepath) do |zip_file|
+      zip_file.each do |entry|
+        puts entry.name
+        unarchived_path = File.join(destination, entry.name) unless unarchived_path.present?
+        puts File.join(destination, entry.name)
+        f_path = File.join(destination, entry.name)
         FileUtils.mkdir_p(File.dirname(f_path))
         unless File.exist?(f_path)
-          zip_file.extract(f, f_path)
+          zip_file.extract(entry, f_path)
           extracted = true if File.exist?(f_path)
         end
-      }
-    }
-    extracted ? unzipped_path : false
+      end
+    end
+    extracted ? unarchived_path : false
   end
 
   def self.batch_create(params)
@@ -52,10 +52,10 @@ class Book < ApplicationRecord
 
     books_created = []
 
-    unzipped_path = Book.unzip_file(zip.path, 'temp')
-    unzipped_files = Dir["#{unzipped_path}*"]
+    unarchived_path = Book.unarchive(zip.path, 'temp')
+    unarchived_files = Dir["#{unarchived_path}*"].sort
     
-    unzipped_files.each_with_index do |filepath, index|
+    unarchived_files.each_with_index do |filepath, index|
       csv_row_data = parsed_csv[index + 1]
       book = Book.create({ name: csv_row_data[0], issue_number: csv_row_data[1] })
       if book.save
