@@ -10,7 +10,7 @@ class ZipFile < ArchiveFile
     file do |zip_file|
       zip_file.each do |entry|
         puts entry.name
-        path_to_unarchive_to = File.join(TEMP_DIR_NAME, entry.name)
+        path_to_unarchive_to = File.join(TEMP_DIR_PATH, entry.name)
         puts path_to_unarchive_to
         FileUtils.mkdir_p(File.dirname(path_to_unarchive_to))
         unless File.exist?(path_to_unarchive_to)

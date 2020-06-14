@@ -52,7 +52,8 @@ class Book < ApplicationRecord
 
     books_created = []
 
-    unarchived_path = Book.unarchive(zip.path, 'temp')
+    archive_file = ArchiveFileBuilder.new(zip.path).build
+    unarchived_path = archive_file.unarchive
     unarchived_files = Dir["#{unarchived_path}*"].sort
     
     unarchived_files.each_with_index do |filepath, index|

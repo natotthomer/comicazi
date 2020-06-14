@@ -2,7 +2,7 @@ require 'zip'
 
 class BookFileBuilder
 
-  TEMP_DIR_NAME = '/tmp/archive_contents'
+  TEMP_DIR_PATH = '/tmp/archive_contents'
   FILE_EXTENSIONS = %w( .jpg )
 
   def initialize(book_file_params)
@@ -39,8 +39,8 @@ class BookFileBuilder
   end
 
   def unrar_file
-    `unrar e "#{@tempfile_path}" "#{TEMP_DIR_NAME}/"`
-    @unrarred_files = Dir.glob("#{TEMP_DIR_NAME}/*#{FILE_EXTENSIONS[0]}").sort
+    `unrar e "#{@tempfile_path}" "#{TEMP_DIR_PATH}/"`
+    @unrarred_files = Dir.glob("#{TEMP_DIR_PATH}/*#{FILE_EXTENSIONS[0]}").sort
 
     # Could also do this in JS and optionally provide a confirmed cover image filename
     @first_image_filename = @unrarred_files.first
@@ -50,7 +50,7 @@ class BookFileBuilder
     Zip::File.open(@tempfile_path) do |zip_file|
       zip_file.each do |entry|
         puts entry.name
-        f_path = File.join(TEMP_DIR_NAME, entry.name)
+        f_path = File.join(TEMP_DIR_PATH, entry.name)
         puts f_path
         FileUtils.mkdir_p(File.dirname(f_path))
         unless File.exist?(f_path)
