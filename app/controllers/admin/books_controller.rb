@@ -4,7 +4,6 @@ class Admin::BooksController < ApplicationController
   end
 
   def batch_new
-    puts "YO WASSUP"
   end
   
   def batch_create

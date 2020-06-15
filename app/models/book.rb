@@ -27,26 +27,6 @@ class Book < ApplicationRecord
     end
   end
 
-  def self.unarchive(filepath, destination)
-    extracted = false
-    
-    unarchived_path = ''
-    Zip::File.open(filepath) do |zip_file|
-      zip_file.each do |entry|
-        puts entry.name
-        unarchived_path = File.join(destination, entry.name) unless unarchived_path.present?
-        puts File.join(destination, entry.name)
-        f_path = File.join(destination, entry.name)
-        FileUtils.mkdir_p(File.dirname(f_path))
-        unless File.exist?(f_path)
-          zip_file.extract(entry, f_path)
-          extracted = true if File.exist?(f_path)
-        end
-      end
-    end
-    extracted ? unarchived_path : false
-  end
-
   def self.batch_create(params)
     zip = params[:zip]
     parsed_csv = CSV.read(params[:metadata].try(:tempfile).try(:path))
@@ -54,15 +34,15 @@ class Book < ApplicationRecord
     books_created = []
 
     archive_file = Archive::ArchiveFileBuilder.new(zip.path).build
+
     unarchived_path = archive_file.unarchive
     unarchived_files = Dir["#{unarchived_path}*"].sort
-    
+
     unarchived_files.each_with_index do |filepath, index|
-      byebug
       csv_row_data = parsed_csv[index + 1]
       book = Book.create({ name: csv_row_data[0], issue_number: csv_row_data[1] })
+
       if book.save
-        byebug
         BookFile.build_with_attachments({ book: book, file: filepath })
         books_created << book
       end

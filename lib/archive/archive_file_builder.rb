@@ -8,7 +8,6 @@ class Archive::ArchiveFileBuilder
   def build
     extension = @extension ? @extension : File.extname(@path_to_archive_file).delete('.')
 
-    byebug
     case extension
     when "zip", "cbz"
       Archive::ZipArchiveFile.new(@path_to_archive_file)

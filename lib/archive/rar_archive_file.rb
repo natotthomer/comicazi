@@ -1,9 +1,11 @@
 class Archive::RarArchiveFile < Archive::ArchiveFile
   
   def unarchive
-    `unrar e "#{@path_to_archive_file}" "#{TEMP_DIR_PATH}"`
+    byebug
+    @unarchived_path = "#{TEMP_DIR_PATH}/#{File.basename(@path_to_archive_file)}"
+    `unrar e #{@path_to_archive_file} #{@unarchived_path}`
     @extracted = true
-    TEMP_DIR_PATH
+    @unarchived_path
   end
   
   def unarchived_files
