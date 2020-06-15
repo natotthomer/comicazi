@@ -2,6 +2,7 @@ require 'zip'
 require 'csv'
 
 class Book < ApplicationRecord
+
   include Rails.application.routes.url_helpers
 
   has_one :book_file
@@ -57,13 +58,16 @@ class Book < ApplicationRecord
     unarchived_files = Dir["#{unarchived_path}*"].sort
     
     unarchived_files.each_with_index do |filepath, index|
+      byebug
       csv_row_data = parsed_csv[index + 1]
       book = Book.create({ name: csv_row_data[0], issue_number: csv_row_data[1] })
       if book.save
+        byebug
         BookFile.build_with_attachments({ book: book, file: filepath })
         books_created << book
       end
     end
     books_created
   end
+
 end

@@ -1,4 +1,5 @@
 class BookFile < ApplicationRecord
+
   belongs_to :book
   has_one_attached :file
   has_one_attached :cover_image
@@ -6,7 +7,7 @@ class BookFile < ApplicationRecord
   after_create
 
   def self.build_with_attachments(params)
-    BookFileBuilder.new(params).create
+    BookFileBuilder.new(params).build
   end
 
   def path_to_file
