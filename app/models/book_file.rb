@@ -9,7 +9,7 @@ class BookFile < ApplicationRecord
     BookFileBuilder.new(params).create
   end
 
-  def path_for_file
+  def path_to_file
     ActiveStorage::Blob.service.path_for(file.key)
   end
 

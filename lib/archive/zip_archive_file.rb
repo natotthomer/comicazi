@@ -1,19 +1,19 @@
 class Archive::ZipArchiveFile < Archive::ArchiveFile
 
   def unarchive
-    Zip::File.open(filepath) do |zip_file|
+    Zip::File.open(@path_to_archive_file) do |zip_file|
       zip_file.each do |entry|
         puts entry.name
         puts File.join(TEMP_DIR_PATH, entry.name)
+        @unarchived_path = File.join(TEMP_DIR_PATH, entry.name)
         if entry.directory?
-          @unarchived_path = File.join(destination, entry.name)
-          if File.exists(entry.name)
-            FileUtils.rm_rf(Dir.glob("#{entry.name)}"))
+          if File.exists?(@unarchived_path)
+            FileUtils.rm_rf(Dir.glob(@unarchived_path))
           end
-          FileUtils.mkdir_p(File.dirname(f_path))
+          FileUtils.mkdir_p(File.dirname(@unarchived_path))
         end
-        
-        zip_file.extract(entry, f_path)
+
+        zip_file.extract(entry, @unarchived_path) { true }
         @extracted = true
       end
     end

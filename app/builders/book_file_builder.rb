@@ -58,17 +58,22 @@ class BookFileBuilder
         end
       end
     end
-    byebug
     @first_image_filename = Dir.glob("#{File.dirname(@tempfile_path)}/*").sort.first
   end
 
   def attach_cover_image
-    unarchive_file
+    # unarchive_file
+    byebug
+    archive_file = Archive::ArchiveFileBuilder.new(@book_file.path_to_file, extension: @book_file.file.filename.extension).build
+    byebug
+    archive_file.unarchive
+
+    path_to_cover_image = Dir[archive_file.unarchived_path].sort.first
     @book_file.cover_image.attach(
-      io: File.open(@first_image_filename),
-      filename: @first_image_filename
+      io: File.open(path_to_cover_image),
+      filename: path_to_cover_image
     )
-    destroy_temp_folder_contents
+    # destroy_temp_folder_contents
   end
 
   def attach_file
@@ -78,6 +83,7 @@ class BookFileBuilder
       io: File.open(path),
       filename: File.basename(path)
     )
+    @book_file.save
     # destroy_temp_folder_contents
   end
 
