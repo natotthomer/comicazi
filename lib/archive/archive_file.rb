@@ -12,14 +12,7 @@ class Archive::ArchiveFile
   end
 
   def destroy_temp_files
-    Dir.foreach("#{File.dirname(@tempfile_path)}/*") do |file|
-      filename = File.join(@tempfile_path, file)
-      if File.directory?(filename)
-        FileUtils.rm_rf(Dir.glob("#{filename[0..-2]}*"))
-      else
-        File.delete(filename) if file != '.' && file != '..'
-      end
-    end
+    FileUtils.rm_rf(@unarchived_path)
   end
 
 end

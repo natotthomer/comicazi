@@ -30,13 +30,14 @@ class BookFileBuilder
   def attach_cover_image
     archive_file = Archive::ArchiveFileBuilder.new(@book_file.path_to_file, extension: @book_file.file.filename.extension).build
     archive_file.unarchive
-    byebug
-    path_to_cover_image = Dir[archive_file.unarchived_path].sort.first
+
+    path_to_cover_image = Dir["#{archive_file.unarchived_path}*"].sort.first
 
     @book_file.cover_image.attach(
       io: File.open(path_to_cover_image),
       filename: path_to_cover_image
     )
+    archive_file.destroy_temp_files
   end
 
   def attach_file
