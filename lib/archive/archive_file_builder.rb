@@ -10,9 +10,9 @@ class Archive::ArchiveFileBuilder
 
     case extension
     when "zip", "cbz"
-      Archive::ZipArchiveFile.new(@path_to_archive_file)
+      Archive::ZipArchiveFile.new(@path_to_archive_file, extension)
     when "rar", "cbr"
-      Archive::RarArchiveFile.new(@path_to_archive_file)
+      Archive::RarArchiveFile.new(@path_to_archive_file, extension)
     else
       ArgumentError.new("File type not supported")
     end

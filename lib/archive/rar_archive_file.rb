@@ -1,13 +1,15 @@
 class Archive::RarArchiveFile < Archive::ArchiveFile
   
   def unarchive
-    @unarchived_path = "#{TEMP_DIR_PATH}/#{File.basename(@path_to_archive_file)}"
-    command = "unrar e #{@path_to_archive_file} #{@unarchived_path}"
+    FileUtils.cp(@path_to_archive_file, "#{TEMP_DIR_PATH}/")
+    File.rename(TEMP_DIR_PATH + "/" + File.basename(@path_to_archive_file), TEMP_DIR_PATH + "/" + File.basename(@path_to_archive_file) + '.cbr')
+    @archive_copy_path = "#{TEMP_DIR_PATH}/#{File.basename(@path_to_archive_file)}.cbr"
+    command = "unrar e #{@archive_copy_path} #{TEMP_DIR_PATH}/#{File.basename(@archive_copy_path, File.extname(@archive_copy_path))}/"
     puts command
-    byebug
     `#{command}`
+    byebug
     @extracted = true
-    @unarchived_path
+    @unarchived_path = "#{TEMP_DIR_PATH}/#{File.basename(@archive_copy_path, File.extname(@archive_copy_path))}/"
   end
   
   def unarchived_files

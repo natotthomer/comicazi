@@ -34,11 +34,12 @@ class Book < ApplicationRecord
     books_created = []
 
     archive_file = Archive::ArchiveFileBuilder.new(zip.path).build
-
+    puts "HERE"
     unarchived_path = archive_file.unarchive
     unarchived_files = Dir["#{unarchived_path}*"].sort
 
     unarchived_files.each_with_index do |filepath, index|
+      puts filepath
       csv_row_data = parsed_csv[index + 1]
       book = Book.create({ name: csv_row_data[0], issue_number: csv_row_data[1] })
 
