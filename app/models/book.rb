@@ -32,8 +32,7 @@ class Book < ApplicationRecord
     parsed_csv = CSV.read(params[:metadata].try(:tempfile).try(:path))
 
     books_created = []
-
-    archive_file = Archive::ArchiveFileBuilder.new(zip.path).build
+    archive_file = Archive::ArchiveFileBuilder.new(zip.path, 'zip').build
     puts "HERE"
     unarchived_path = archive_file.unarchive
     unarchived_files = Dir["#{unarchived_path}*"].sort

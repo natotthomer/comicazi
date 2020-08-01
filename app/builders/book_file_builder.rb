@@ -27,7 +27,7 @@ class BookFileBuilder
   end
 
   def attach_cover_image
-    archive_file = Archive::ArchiveFileBuilder.new(@book_file.path_to_file, extension: @book_file.extension).build
+    archive_file = Archive::ArchiveFileBuilder.new(@book_file.path_to_file, @book_file.extension).build
     puts "THERE"
     archive_file.unarchive
 

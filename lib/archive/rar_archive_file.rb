@@ -7,7 +7,6 @@ class Archive::RarArchiveFile < Archive::ArchiveFile
     command = "unrar e #{@archive_copy_path} #{TEMP_DIR_PATH}/#{File.basename(@archive_copy_path, File.extname(@archive_copy_path))}/"
     puts command
     `#{command}`
-    byebug
     @extracted = true
     @unarchived_path = "#{TEMP_DIR_PATH}/#{File.basename(@archive_copy_path, File.extname(@archive_copy_path))}/"
   end

@@ -1,6 +1,6 @@
 class Archive::ArchiveFileBuilder
 
-  def initialize(path_to_archive_file, extension: nil)
+  def initialize(path_to_archive_file, extension)
     @path_to_archive_file = path_to_archive_file
     @extension = extension
   end
