@@ -34,16 +34,21 @@ class Book < ApplicationRecord
     books_created = []
     archive_file = Archive::ArchiveFileBuilder.new(zip.path, 'zip').build
     archive_file.unarchive
+    # unarchived_files = Dir["#{archive_file.path_to_entry}*"].sort
     unarchived_files = Dir.entries(archive_file.path_to_entry).select { |entry| !['.','..'].include?(entry) }.sort
 
-    byebug
+    if unarchived_files.none? { |file| file.start_with?("/tmp/archive_contents/#{File.basename(zip.original_filename, File.extname(zip.original_filename))}/") }
+      unarchived_files = unarchived_files.map { |file| file.prepend("/tmp/archive_contents/#{File.basename(zip.original_filename, File.extname(zip.original_filename))}/")}
+    end
+
     unarchived_files.each_with_index do |filepath, index|
       puts 'YOOOOO'
       csv_row_data = parsed_csv[index + 1]
       book = Book.create({ name: csv_row_data[0], issue_number: csv_row_data[1] })
-      
+
       if book.save
-        BookFile.build_with_attachments({ book: book, file: filepath, path_to_entry: archive_file.path_to_entry })
+        BookFileBuilder.new({ book: book, file: filepath, path_to_entry: archive_file.path_to_entry }).build
+        # BookFile.build_with_attachments({ book: book, file: filepath, path_to_entry: archive_file.path_to_entry })
         books_created << book
       end
     end

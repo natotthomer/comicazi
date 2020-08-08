@@ -29,7 +29,6 @@ class BookFileBuilder
   end
 
   def attach_file
-    byebug
     path = @book_file_params[:file].try(:path) || @book_file_params[:file]
     @book_file.file.attach(
       io: File.open(path),
@@ -43,7 +42,8 @@ class BookFileBuilder
     archive_file = Archive::ArchiveFileBuilder.new(@book_file.path_to_file, @book_file.extension).build
     archive_file.unarchive
 
-    path_to_cover_image = Dir["#{archive_file.path_to_entry}*"].sort.first
+    path_to_entry = archive_file.path_to_entry.end_with?('/') ? archive_file.path_to_entry : archive_file.path_to_entry + '/'
+    path_to_cover_image = Dir["#{path_to_entry}*"].sort.first
 
     @book_file.cover_image.attach(
       io: File.open(path_to_cover_image),

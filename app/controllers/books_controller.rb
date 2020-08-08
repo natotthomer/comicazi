@@ -8,7 +8,8 @@ class BooksController < ApplicationController
   def create
     @book = Book.make(book_params)
     if @book
-      @file = BookFile.build_with_attachments(book_file_params)
+      @file = BookFileBuilder.new(book_file_params).build
+      # @file = BookFile.build_with_attachments(book_file_params)
       redirect_to(@book)
     else
       render "new"
