@@ -5,7 +5,7 @@ ruby '2.5.8'
 
 gem 'rails', '~> 5.2.4', '>= 5.2.4.3'
 gem 'mysql2', '>= 0.4.4', '< 0.6.0'
-gem 'puma', '~> 3.11'
+gem 'puma', '~> 4.3'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
