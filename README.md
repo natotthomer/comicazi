@@ -1,5 +1,10 @@
 # README
 
+# To run
+
+* docker-compose run web bundle install
+* docker-compose up
+
 # TODO
 
 * Handle RAR and ZIP uploads

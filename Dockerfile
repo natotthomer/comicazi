@@ -1,4 +1,4 @@
-FROM ruby:2.5
+FROM ruby:2.5.8
 RUN apt-get update -qq && apt-get install -y nodejs mariadb-client nano
 RUN echo "# deb http://snapshot.debian.org/archive/debian/20200514T145000Z buster main" > /etc/apt/sources.list
 RUN echo "deb http://deb.debian.org/debian buster main contrib non-free" >> /etc/apt/sources.list
