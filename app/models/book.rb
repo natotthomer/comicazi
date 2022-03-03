@@ -32,10 +32,10 @@ class Book < ApplicationRecord
     parsed_csv = CSV.read(params[:metadata].try(:tempfile).try(:path))
 
     books_created = []
-    archive_file = Archive::ArchiveFileBuilder.new(zip.path, 'zip').build
+    archive_file = Archive::ArchiveFileFactory.new(zip.path, 'zip').create
     archive_file.unarchive
-    # unarchived_files = Dir["#{archive_file.path_to_entry}*"].sort
-    unarchived_files = Dir.entries(archive_file.path_to_entry).select { |entry| !['.','..'].include?(entry) }.sort
+    # unarchived_files = Dir["#{archive_file.path_to_extracted}*"].sort
+    unarchived_files = Dir.entries(archive_file.path_to_extracted).select { |entry| !['.','..'].include?(entry) }.sort
 
     if unarchived_files.none? { |file| file.start_with?("/tmp/archive_contents/#{File.basename(zip.original_filename, File.extname(zip.original_filename))}/") }
       unarchived_files = unarchived_files.map { |file| file.prepend("/tmp/archive_contents/#{File.basename(zip.original_filename, File.extname(zip.original_filename))}/")}
@@ -47,8 +47,8 @@ class Book < ApplicationRecord
       book = Book.create({ name: csv_row_data[0], issue_number: csv_row_data[1] })
 
       if book.save
-        BookFileBuilder.new({ book: book, file: filepath, path_to_entry: archive_file.path_to_entry }).build
-        # BookFile.build_with_attachments({ book: book, file: filepath, path_to_entry: archive_file.path_to_entry })
+        BookFileBuilder.new({ book: book, file: filepath, path_to_extracted: archive_file.path_to_extracted }).build
+        # BookFile.build_with_attachments({ book: book, file: filepath, path_to_extracted: archive_file.path_to_extracted })
         books_created << book
       end
     end

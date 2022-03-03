@@ -6,10 +6,18 @@ class BooksController < ApplicationController
   end
   
   def create
-    @book = Book.make(book_params)
+    create_params = book_params
+
+    @book = BookFactory.new(
+      book_params[:name],
+      book_params[:issue_number],
+      book_params[:file],
+    ).create
+    
+    # @book = Book.make(book_params)
     if @book
       # @file = BookFileBuilder.new(book_file_params).build
-      @file = BookFile.build_with_attachments(book_file_params)
+      # @file = BookFile.build_with_attachments(book_file_params)
       redirect_to(@book)
     else
       render "new"
@@ -40,10 +48,10 @@ class BooksController < ApplicationController
   private
 
   def book_params
-    params.require(:book).permit(:name, :issue_number)
+    params.require(:book).permit(:name, :issue_number, :file)
   end
 
-  def book_file_params
-    params.require(:book).permit(:file).merge({ book: @book })
-  end
+  # def book_file_params
+  #   params.require(:book).permit(:file).merge({ book: @book })
+  # end
 end

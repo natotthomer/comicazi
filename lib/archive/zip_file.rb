@@ -9,7 +9,7 @@ class ZipFile < ArchiveFile
   def unarchive
     file do |zip_file|
       zip_file.each do |entry|
-        path_to_unarchive_to = File.join(TEMP_DIR_PATH, entry.name)
+        path_to_unarchive_to = File.join(TMP_ARCHIVE_CONTENTS_PATH, entry.name)
 
         FileUtils.mkdir_p(File.dirname(path_to_unarchive_to))
 

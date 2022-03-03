@@ -1,8 +1,8 @@
 class BookFactory
-  def initialize(name, issue_number, book_file)
+  def initialize(name, issue_number, file)
     @name = name
     @issue_number = issue_number
-    @book_file = book_file
+    @file = file
   end
 
   def create
@@ -10,6 +10,8 @@ class BookFactory
 
     Book.transaction do
       @book = Book.create!(name: @name, issue_number: @issue_number)
+      BookFileFactory.new(@file, @book).create
+      @book
     end
   end
 
