@@ -4,6 +4,7 @@ class BookFileBuilder
 
   TMP_ARCHIVE_CONTENTS_PATH = '/tmp/archive_contents'
   FILE_EXTENSIONS = %w( .jpg )
+  IMAGE_MIME_TYPES = %w( image/jpeg )
 
   def initialize(book_file_params)
     @book_file_params = book_file_params
@@ -15,7 +16,6 @@ class BookFileBuilder
     @book_file = BookFile.new(book: @book_file_params[:book], extension: extension)
     build_attachments
 
-    puts @book_file.path_to_file
     @book_file.save
     @book_file
   end
@@ -38,12 +38,12 @@ class BookFileBuilder
   end
 
   def attach_cover_image
-    puts "THERE"
     archive_file = Archive::ArchiveFileFactory.new(@book_file.path_to_file, @book_file.extension).create
     archive_file.unarchive
-
     path_to_extracted = archive_file.path_to_extracted.end_with?('/') ? archive_file.path_to_extracted : archive_file.path_to_extracted + '/'
-    path_to_cover_image = Dir["#{path_to_extracted}*"].sort.first
+
+    image_files_in_archive = Dir["#{path_to_extracted}*"].sort.select { |file| IMAGE_MIME_TYPES.include?(MimeMagic.by_path(file).type) }
+    path_to_cover_image = image_files_in_archive.first
 
     @book_file.cover_image.attach(
       io: File.open(path_to_cover_image),

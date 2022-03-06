@@ -22,6 +22,7 @@ class Book < ApplicationRecord
 
   def self.make(params)
     book = Book.create(params)
+
     if book.save
       book
     end
@@ -42,7 +43,6 @@ class Book < ApplicationRecord
     end
 
     unarchived_files.each_with_index do |filepath, index|
-      puts 'YOOOOO'
       csv_row_data = parsed_csv[index + 1]
       book = Book.create({ name: csv_row_data[0], issue_number: csv_row_data[1] })
 

@@ -1,5 +1,5 @@
 <h1>Listing Books</h1>
- 
+
 <table>
   <thead>
     <tr>
@@ -19,7 +19,8 @@
     </tr>
   </tbody>
 </table>
- <img style="height: 300px;" src="<%= @book.cover_image %>">
+<img style="height: 300px;" src="<%= @book.cover_image %>">
 <br>
  
 <%= link_to "New book", new_book_path %>
+<%= link_to "All books", books_path %>

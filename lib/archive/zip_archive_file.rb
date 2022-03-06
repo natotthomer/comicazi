@@ -8,23 +8,17 @@ class Archive::ZipArchiveFile < Archive::ArchiveFile
     `zip -d #{@path} __MACOSX\* .DS_Store`
     `zip -r #{@path} -x "**/.DS_Store"`
     Zip::File.open(@path) do |zip_file|
-
-      
-      # end
-      
       # first build the directory :check:
       # then iterate over the entries
       # extract them, as needed
       # directory will already be built and we don't need to deal with it anymore
-      
-      # byebug
+
       directory_entry = zip_file.entries.find { |entry| entry.ftype == FTYPES[:directory] }
       @path_to_extracted = directory_entry ? directory_entry.name : 'default_directory'
 
       @path_to_extracted = File.join(TMP_ARCHIVE_CONTENTS_PATH, @path_to_extracted)
       make_directory
       zip_file.each do |entry|
-        puts "HELLO HELLOOOOOOOOOOOOOOOOOOOOOOO"
         next if should_be_ignored(entry)
         if entry.directory?
           @unarchived_path = @path_to_extracted

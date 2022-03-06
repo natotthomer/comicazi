@@ -17,11 +17,6 @@ class Archive::RarArchiveFile < Archive::ArchiveFile
   end
   
   def path_to_extracted
-    # puts "BASENAAAAAAAAAAME"
-    # puts @path
-    # puts basename
-    # puts basename_with_extension
-    # puts "++++++++++++++++++++++"
     "#{TMP_ARCHIVE_CONTENTS_PATH}/#{basename}/"
   end
 
@@ -32,7 +27,6 @@ class Archive::RarArchiveFile < Archive::ArchiveFile
   end
   
   def extract_archive
-    byebug
     `unrar e #{@path} #{path_to_extracted}`
   end
 end
