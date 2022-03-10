@@ -21,6 +21,10 @@
 </table>
 <img style="height: 300px;" src="<%= @book.cover_image %>">
 <br>
+
+<% @image_files.each do |image_file| %>
+  <img style="height: 100px;" src="<%= image_file %>">
+<% end %>
  
 <%= link_to "New book", new_book_path %>
 <%= link_to "All books", books_path %>

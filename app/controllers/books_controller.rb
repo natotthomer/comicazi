@@ -43,6 +43,10 @@ class BooksController < ApplicationController
 
   def show
     @book = Book.find(params[:id])
+    archive_file = Archive::ArchiveFileFactory.new(@book.archive_file, @book.book_file.extension).create
+    archive_file.unarchive
+    @image_files = archive_file.image_files
+    puts @image_files
   end
   
   private

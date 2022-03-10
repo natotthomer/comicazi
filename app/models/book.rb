@@ -18,6 +18,10 @@ class Book < ApplicationRecord
     rails_blob_path(self.book_file.cover_image, disposition: "attachment", only_path: true)
   end
 
+  def archive_file
+    rails_blob_path(self.book_file.file, only_path: true)
+  end
+
   # Class methods
 
   def self.make(params)

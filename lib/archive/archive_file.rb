@@ -27,4 +27,10 @@ class Archive::ArchiveFile
     FileUtils.rm_rf(@unarchived_path)
   end
 
+  def image_files
+    # path_to_extracted = @archive_file.path_to_extracted
+    path_to_extracted = self.path_to_extracted.end_with?('/') ? self.path_to_extracted : self.path_to_extracted + '/'
+    Dir["#{path_to_extracted}*"].sort.select { |file| BookFileFactory::IMAGE_MIME_TYPES.include?(MimeMagic.by_path(file).type) }
+  end
+
 end

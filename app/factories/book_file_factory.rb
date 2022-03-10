@@ -45,9 +45,7 @@ class BookFileFactory
   end
 
   def attach_cover_image
-    path_to_extracted = @archive_file.path_to_extracted
-    path_to_extracted = @archive_file.path_to_extracted.end_with?('/') ? @archive_file.path_to_extracted : @archive_file.path_to_extracted + '/'
-    image_files_in_archive = Dir["#{path_to_extracted}*"].sort.select { |file| IMAGE_MIME_TYPES.include?(MimeMagic.by_path(file).type) }
+    image_files_in_archive = @archive_file.image_files
     path_to_cover_image = image_files_in_archive.first
 
     @book_file.cover_image.attach(
