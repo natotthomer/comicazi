@@ -3,7 +3,7 @@
 <table>
   <thead>
     <tr>
-      <th>Name</th>
+      <th>Title</th>
       <th>Issue Number</th>
       <th colspan="3"></th>
     </tr>
@@ -11,7 +11,7 @@
  
   <tbody>
     <tr>
-      <td><%= @book.name %></td>
+      <td><%= @book.title %></td>
       <td><%= @book.issue_number %></td>
       <td><%= link_to "Show", @book %></td>
       <td><%= link_to "Edit", edit_book_path(@book) %></td>
@@ -19,12 +19,11 @@
     </tr>
   </tbody>
 </table>
-<img style="height: 300px;" src="<%= @book.cover_image %>">
+<% @book.images.each do |image|%>
+    <%= image_tag(image, :width => 200) %>
+  <% end %>
 <br>
 
-<% @image_files.each do |image_file| %>
-  <img style="height: 100px;" src="<%= image_file %>">
-<% end %>
  
 <%= link_to "New book", new_book_path %>
 <%= link_to "All books", books_path %>

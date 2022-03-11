@@ -8,6 +8,7 @@ class Archive::ArchiveFile
     'cbr',
     'cbz'
   ]
+  IMAGE_MIME_TYPES = %w( image/jpeg )
 
   attr_reader :path, :path_to_extracted
   attr_reader :unarchived_path
@@ -30,7 +31,7 @@ class Archive::ArchiveFile
   def image_files
     # path_to_extracted = @archive_file.path_to_extracted
     path_to_extracted = self.path_to_extracted.end_with?('/') ? self.path_to_extracted : self.path_to_extracted + '/'
-    Dir["#{path_to_extracted}*"].sort.select { |file| BookFileFactory::IMAGE_MIME_TYPES.include?(MimeMagic.by_path(file).type) }
+    Dir["#{path_to_extracted}*"].sort.select { |file| IMAGE_MIME_TYPES.include?(MimeMagic.by_path(file).type) }
   end
 
 end

@@ -5,21 +5,13 @@ class Book < ApplicationRecord
 
   include Rails.application.routes.url_helpers
 
-  has_one :book_file
+  has_many_attached :images
 
   def to_hash
     {
-      name: self.name,
+      title: self.title,
       issue_number: self.issue_number
     }
-  end
-
-  def cover_image
-    rails_blob_path(self.book_file.cover_image, disposition: "attachment", only_path: true)
-  end
-
-  def archive_file
-    rails_blob_path(self.book_file.file, only_path: true)
   end
 
   # Class methods
@@ -48,11 +40,9 @@ class Book < ApplicationRecord
 
     unarchived_files.each_with_index do |filepath, index|
       csv_row_data = parsed_csv[index + 1]
-      book = Book.create({ name: csv_row_data[0], issue_number: csv_row_data[1] })
+      book = Book.create({ title: csv_row_data[0], issue_number: csv_row_data[1] })
 
       if book.save
-        BookFileBuilder.new({ book: book, file: filepath, path_to_extracted: archive_file.path_to_extracted }).build
-        # BookFile.build_with_attachments({ book: book, file: filepath, path_to_extracted: archive_file.path_to_extracted })
         books_created << book
       end
     end
