@@ -6,6 +6,7 @@ class Book < ApplicationRecord
   include Rails.application.routes.url_helpers
 
   has_many_attached :images
+  has_one :series_issue
 
   def to_hash
     {

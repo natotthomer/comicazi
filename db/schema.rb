@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_31_231703) do
+ActiveRecord::Schema.define(version: 2022_03_14_031227) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.string "name", null: false
@@ -40,5 +40,20 @@ ActiveRecord::Schema.define(version: 2020_05_31_231703) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "series", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
+    t.string "title"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "series_issues", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
+    t.bigint "book_id", null: false
+    t.bigint "series_id", null: false
+    t.index ["book_id"], name: "index_series_issues_on_book_id"
+    t.index ["series_id"], name: "index_series_issues_on_series_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "series_issues", "books"
+  add_foreign_key "series_issues", "series"
 end
