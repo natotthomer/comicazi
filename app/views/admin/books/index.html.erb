@@ -1,5 +1,5 @@
 <h1>Listing Books</h1>
- 
+<p><%= link_to "New", new_book_path %></p>
 <table>
   <thead>
     <tr>
@@ -12,6 +12,7 @@
   <tbody>
     <% @books.each do |book| %>
       <tr>
+        <td><%= image_tag(book.images.first, :height => 80) %></td>
         <td><%= book.title %></td>
         <td><%= book.issue_number %></td>
         <td><%= link_to "Show", book %></td>
@@ -21,7 +22,3 @@
     <% end %>
   </tbody>
 </table>
- 
-<br>
- 
-<%= link_to "New book", new_book_path %>
