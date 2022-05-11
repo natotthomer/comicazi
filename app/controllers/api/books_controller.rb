@@ -5,6 +5,21 @@ class Api::BooksController < ApplicationController
     render json: Book.find(params[:id])
   end
 
+  def index
+    books = Book.all.map do |book|
+      cover = url_for book.images.first
+      {
+        title: book.title,
+        issue_number: book.issue_number,
+        series: book.series,
+        cover: cover,
+        id: book.id
+      }
+    end
+
+    render json: books
+  end
+
   def create
     puts book_params
     # create_params = book_params

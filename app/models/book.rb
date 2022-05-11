@@ -7,6 +7,7 @@ class Book < ApplicationRecord
 
   has_many_attached :images
   has_one :series_issue
+  has_one :series, through: :series_issue
 
   def to_hash
     {
